@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     #apps
     'apps.users',
+    'apps.todo',
 ]
 
 REST_FRAMEWORK = {

@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Todo(models.Model):
+class Task(models.Model):
     title = models.CharField(
         max_length=100,
         verbose_name="Заголовка"
@@ -24,5 +24,5 @@ class Todo(models.Model):
         return self.title
     
     class Meta:
-        verbose_name = ""
-        verbose_name_plural = "ToDo_List"
+        verbose_name = "Таск"
+        verbose_name_plural = "Таски"
