@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated  # Добавим имп�
 
 from apps.todo.models import Task
 from apps.todo.serializers import TaskSerializer
-# Create your views here.
+
 class TaskAPIViewSet(GenericViewSet,
                      mixins.ListModelMixin,
                      mixins.CreateModelMixin,
@@ -16,6 +16,7 @@ class TaskAPIViewSet(GenericViewSet,
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]  # Добавим разрешение IsAuthenticated
+    
 
 
     

@@ -4,12 +4,11 @@ from .views import TaskAPIViewSet
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-
 router = DefaultRouter()
 router.register('tasks/', TaskAPIViewSet, basename='task')
 
 urlspatterns = [
-    path("task", TokenObtainPairView.as_view(), name='task'),
+    path("task/", TokenObtainPairView.as_view(), name='task'),
 ]
 
 urlpatterns = router.urls
