@@ -9,3 +9,4 @@ urlpatterns = [
     path('all_delete', ToDoAllDelete.as_view(), name="all_delete")
 ]
 urlpatterns += router.urls 
+
