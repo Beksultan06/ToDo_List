@@ -1,14 +1,11 @@
-from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import TaskAPIViewSet
-
-from rest_framework_simplejwt.views import TokenObtainPairView
+from django.urls import path
+from apps.todo.views import ToDoAPIViewSet, ToDoAllDelete
 
 router = DefaultRouter()
-router.register('tasks/', TaskAPIViewSet, basename='task')
+router.register('todo', ToDoAPIViewSet, 'api_todo')
 
-urlspatterns = [
-    path("task/", TokenObtainPairView.as_view(), name='task'),
+urlpatterns = [
+    path('all_delete', ToDoAllDelete.as_view(), name="all_delete")
 ]
-
-urlpatterns = router.urls
+urlpatterns += router.urls 

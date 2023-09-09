@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from apps.todo.models import Task
+from apps.todo.models import ToDo
 
-class TaskSerializer(serializers.ModelSerializer):
+class ToDoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Task
+        model = ToDo 
         fields = "__all__"
 
-
+        

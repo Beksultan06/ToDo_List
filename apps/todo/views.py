@@ -1,33 +1,44 @@
-from django.shortcuts import render
-from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.permissions import IsAuthenticated  # Добавим импорт разрешения IsAuthenticated
-from rest_framework.generics import DestroyAPIView
+from rest_framework import mixins
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.response import Response
+from rest_framework import generics
 
+from apps.todo.models import ToDo 
+from apps.todo.serializers import ToDoSerializer
+from apps.todo.permissions import ToDoPermission
 
-from apps.todo.models import Task
-from apps.todo.serializers import TaskSerializer
-
-class TaskAPIViewSet(GenericViewSet,
+# Create your views here.
+class ToDoAPIViewSet(GenericViewSet,
                      mixins.ListModelMixin,
                      mixins.CreateModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin,
                      mixins.DestroyModelMixin):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-    permission_classes = [IsAuthenticated]  # Добавим разрешение IsAuthenticated
+    queryset = ToDo.objects.all()
+    serializer_class = ToDoSerializer
+    permission_classes = (IsAuthenticated, )
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['user', 'title', 'description', 'is_completed']
+    search_fields = ['user__username', 'title', 'description']
+    
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (ToDoPermission(), )
+        return (AllowAny(), )
     
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
-    
-class ToDoAllDeleteAPIViewSet(DestroyAPIView):
-    queryset = Task.objects.all()
+
+
+class ToDoAllDelete(generics.DestroyAPIView):
+    queryset = ToDo.objects.all()
+    serializer_class = ToDoSerializer
     
     def delete(self, request, *args, **kwargs):
-        todo = Task.objects.filter(user=request.user)
-        todo = [t for t in todo.delete()]
-        return Response({'delete' : 'Все задания удалены'})
-
-    
+        todo = ToDo.objects.filter(user=request.user)
+        todo.delete()
+        return Response({'delete' : 'Все такски удалены !!!!'})

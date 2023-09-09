@@ -1,27 +1,39 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 # Create your models here.
-class Task(models.Model):
-    title = models.CharField(
-        max_length=100,
-        verbose_name="Заголовка"
+
+User = get_user_model()
+
+class ToDo(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='user_todo',
+        verbose_name="Пользователь"
     )
-    description = models.TextField(
-        max_length="Описание"
+    title = models.CharField(
+        max_length=200,
+        verbose_name='Название таска'
+    )
+    description = models.CharField(
+        max_length=200,
+        verbose_name='Описание'
     )
     is_completed = models.BooleanField(
-        verbose_name="Выполнена"
+        default=False,
+        verbose_name='Статус операции'
     )
-    created_at = models.BooleanField(
-        verbose_name="Создана"
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Создано'
     )
     image = models.ImageField(
-        upload_to=True,
-        verbose_name="Фотография"
+        upload_to='todo_images/',
+        verbose_name='Фото'
     )
 
     def __str__(self):
-        return self.title
+        return self.title 
     
     class Meta:
         verbose_name = "Таск"
